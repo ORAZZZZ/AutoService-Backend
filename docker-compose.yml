@@ -23,6 +23,29 @@ services:
     volumes:
       - redis-data:/data
 
+  app:
+    build: .
+    container_name: autoservice-app
+    restart: always
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DATABASE_HOST: postgres-db
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      REDIS_HOST: redis-cache
+      REDIS_PORT: ${REDIS_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+      API_NINJAS_URL: ${API_NINJAS_URL}
+      API_NINJAS_SECRET_KEY: ${API_NINJAS_SECRET_KEY}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - redis
+
 volumes:
   postgres-data:
   redis-data:
